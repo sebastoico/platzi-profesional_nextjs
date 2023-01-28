@@ -10,6 +10,8 @@
     "lint:fix": "eslint src/ --fix"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.8",
+    "@heroicons/react": "^2.0.14",
     "@next/font": "13.1.5",
     "autoprefixer": "^10.4.13",
     "next": "13.1.5",
