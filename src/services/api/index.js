@@ -1,12 +1,13 @@
 const API = process.env.NEXT_PUBLIC_API_URL;
 const VERSION = process.env.NEXT_PUBLIC_API_VERSION;
+
 const endPoints = {
   products: {
-    getProducts: `${API}/api/${VERSION}/products`,
+    getProducts: (limit, offset) => `${API}/api/${VERSION}/products?limit=${limit}&offset=${offset}`,
     postProducts: `${API}/api/${VERSION}/products`,
-    getProduct: (id) => `${API}/api/${VERSION}/products/${id}`,
-    putProduct: (id) => `${API}/api/${VERSION}/products/${id}`,
-    deleteProduct: (id) => `${API}/api/${VERSION}/products/${id}`,
+    getProduct: (id) => `${API}/api/${VERSION}/products/${id}/`,
+    putProduct: (id) => `${API}/api/${VERSION}/products/${id}/`,
+    deleteProduct: (id) => `${API}/api/${VERSION}/products/${id}/`,
   },
   users: {
     getUsers: `${API}/api/${VERSION}/users`,
@@ -25,6 +26,7 @@ const endPoints = {
     getCategorie: (id) => `${API}/api/${VERSION}/categories/${id}`,
     putCategorie: (id) => `${API}/api/${VERSION}/categories/${id}`,
     deleteCategorie: (id) => `${API}/api/${VERSION}/categories/${id}`,
+    getCategorieProducts: (id) => `${API}/api/${VERSION}/categories/${id}`,
   },
   files: {
     postFiles: `${API}/api/${VERSION}/files/upload`,
