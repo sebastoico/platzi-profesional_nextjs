@@ -5,7 +5,7 @@ module.exports = {
   content: ['./src/**/*{html,js,jsx}'],
   theme: {
     colors: {
-      ...colors
-    }
-  }
-}
+      ...colors,
+    },
+  },
+};

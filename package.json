@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint src/ --fix"
+    "lint:fix": "next lint --fix",
+    "prettier": "npx prettier --check .",
+    "prettier:fix": "npx prettier --write ."
   },
   "dependencies": {
     "@headlessui/react": "^1.7.8",
