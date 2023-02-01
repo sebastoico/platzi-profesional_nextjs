@@ -14,9 +14,10 @@ export const Chart = ({ chartData }) => {
             text: 'Category',
             fontSize: 20,
           },
-          legend: {
-            display: true,
-            position: 'right',
+          plugins: {
+            legend: {
+              display: false,
+            },
           },
         }}
       />

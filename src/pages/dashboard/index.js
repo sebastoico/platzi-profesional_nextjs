@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import endPoints from '@services/api';
 import useFetch from '@hooks/useFetch';
+import { Chart } from '@common/Chart';
 import Pagination from '@common/Pagination';
 
 const PRODUCT_LIMIT = 10;
@@ -9,10 +10,28 @@ const PRODUCT_LIMIT = 10;
 export default function Dashboard() {
   const [offset, setOffset] = useState(0);
   const products = useFetch(endPoints.products.getProducts(PRODUCT_LIMIT, offset));
+  const allProducts = useFetch(endPoints.products.getProducts(0, 0));
   const totalProducts = useFetch(endPoints.products.getProducts(0, 0)).length;
+
+  const categoryNames = allProducts?.map((product) => product.category);
+  const categoryCount = categoryNames?.map((category) => category.name);
+
+  const countOcurrences = (arr) => arr.reduce((prev, curr) => ((prev[curr] = ++prev[curr] || 1), prev), {});
+
+  const data = {
+    datasets: [
+      {
+        label: 'Count',
+        data: countOcurrences(categoryCount),
+        borderWidth: 2,
+        backgroundColor: ['#ffbb11', '#c0c0c0', '#50AF95', '#f3ba2f', '#2a71d0'],
+      },
+    ],
+  };
 
   return (
     <>
+      <Chart className="mb-8 mt-s" chartData={data} />
       {totalProducts > 0 && <Pagination setOffset={setOffset} pageProducts={PRODUCT_LIMIT} totalProducts={totalProducts} />}
       <div className="flex flex-col">
         <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
