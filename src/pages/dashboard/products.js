@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { PlusCircleIcon } from '@heroicons/react/20/solid';
 import Modal from '@common/Modal';
+import FormProduct from '@components/FormProduct';
 
 const Products = () => {
   const [open, setOpen] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [products] = useState([]);
 
   return (
     <>
@@ -92,8 +93,7 @@ const Products = () => {
         </div>
       </div>
       <Modal open={open} setOpen={setOpen}>
-        <h1>Hola mundo</h1>
-        {setProducts}
+        <FormProduct />
       </Modal>
     </>
   );
