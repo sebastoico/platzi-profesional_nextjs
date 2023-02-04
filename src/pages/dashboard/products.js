@@ -11,7 +11,7 @@ import Alert from '@common/Alert';
 const Products = () => {
   const [open, setOpen] = useState(false);
   const [products, setProducts] = useState([]);
-  const [alert, setAlert, toggleAlert] = useAlert();
+  const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
     async function getProducts() {
@@ -27,7 +27,7 @@ const Products = () => {
 
   return (
     <>
-      <Alert alert={alert} handleClose={toggleAlert}/>
+      <Alert alert={alert} handleClose={toggleAlert} />
       <div className="lg:flex lg:items-center lg:justify-between mb-8">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">List of products</h2>

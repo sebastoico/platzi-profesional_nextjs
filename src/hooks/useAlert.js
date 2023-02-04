@@ -9,7 +9,7 @@ const useAlert = (options) => {
   };
   const [alert, setAlert] = useState({
     ...defaultOptions,
-    ...options
+    ...options,
   });
   const toggleAlert = () => {
     setAlert(!alert.active);

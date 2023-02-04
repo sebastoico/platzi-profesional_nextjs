@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import ValidationSchema from '@common/ValidationSchema';
 import { addProduct } from '@services/api/products';
 
-export default function FormProduct() {
+export default function FormProduct({ setOpen, setAlert }) {
   const formRef = useRef(null);
 
   const handleSubmit = async (event) => {
@@ -20,9 +20,24 @@ export default function FormProduct() {
       alert(err.errors);
     });
     if (validate) {
-      addProduct(data).then((response) => {
-        console.log(response);
-      });
+      addProduct(data)
+        .then(() => {
+          setAlert({
+            active: true,
+            message: 'Product added succesfully',
+            type: 'success',
+            autoClose: false,
+          });
+          setOpen(false);
+        })
+        .catch((error) => {
+          setAlert({
+            active: true,
+            message: error.message,
+            type: 'error',
+            autoClose: false,
+          });
+        });
     }
   };
 
