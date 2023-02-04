@@ -1,12 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Fragment } from 'react';
+import { useRouter } from 'next/router';
 import { useAuth } from '@hooks/useAuth';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'Productos', href: '/dashboard/products/', current: false },
+  { name: 'Dashboard', href: '/dashboard', current: false },
+  { name: 'Productos', href: '/dashboard/products', current: false },
   { name: 'Ventas', href: '#', current: false },
 ];
 const userNavigation = [
@@ -21,11 +22,16 @@ function classNames(...classes) {
 
 export default function Header() {
   const auth = useAuth();
+  const route = useRouter().pathname.substring();
 
   const userData = {
     name: auth.user?.name,
     email: auth.user?.email,
     imageUrl: auth.user?.avatar ? auth.user.avatar : `https://ui-avatars.com/api/?name=${auth.user?.name}`,
+  };
+
+  const isCurrent = (item) => {
+    return route == item.href;
   };
 
   return (
@@ -45,8 +51,8 @@ export default function Header() {
                         <a
                           key={item.name}
                           href={item.href}
-                          className={classNames(item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium')}
-                          aria-current={item.current ? 'page' : undefined}
+                          className={classNames(isCurrent(item) ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium')}
+                          aria-current={isCurrent(item) ? 'page' : undefined}
                         >
                           {item.name}
                         </a>

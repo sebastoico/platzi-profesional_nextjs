@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import ValidationSchema from '@common/ValidationSchema';
+import { addProduct } from '@services/api/products';
 
 export default function FormProduct() {
   const formRef = useRef(null);
@@ -15,10 +16,14 @@ export default function FormProduct() {
       images: [formData.get('images').name],
     };
 
-    const validation = await ValidationSchema.validate(data).catch(function (err) {
+    const validate = await ValidationSchema.validate(data).catch(function (err) {
       alert(err.errors);
     });
-    console.log(validation);
+    if (validate) {
+      addProduct(data).then((response) => {
+        console.log(response);
+      });
+    }
   };
 
   return (
