@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 import ValidationSchema from '@common/ValidationSchema';
-import { addProduct } from '@services/api/products';
+import { addProduct, updateProduct } from '@services/api/products';
+import { useRouter } from 'next/router';
 
 export default function FormProduct({ setOpen, setAlert, product }) {
   const formRef = useRef(null);
+  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -13,31 +15,57 @@ export default function FormProduct({ setOpen, setAlert, product }) {
       price: parseInt(formData.get('price')),
       description: formData.get('description'),
       categoryId: parseInt(formData.get('category')),
-      images: [formData.get('images').name],
+      images: product ? product.images : [formData.get('images').name],
     };
 
     const validate = await ValidationSchema.validate(data).catch(function (err) {
-      alert(err.errors);
+      setAlert({
+        active: true,
+        message: err.errors,
+        type: 'error',
+        autoClose: true,
+      });
     });
     if (validate) {
-      addProduct(data)
-        .then(() => {
-          setAlert({
-            active: true,
-            message: 'Product added succesfully',
-            type: 'success',
-            autoClose: true,
+      if (product) {
+        updateProduct(product.id, data)
+          .then(() => {
+            setAlert({
+              active: true,
+              message: 'Product edited succesfully',
+              type: 'success',
+              autoClose: true,
+            });
+            setTimeout(() => router.push('/dashboard/products/'), 3000);
+          })
+          .catch((error) => {
+            setAlert({
+              active: true,
+              message: error.message,
+              type: 'error',
+              autoClose: true,
+            });
           });
-          setOpen(false);
-        })
-        .catch((error) => {
-          setAlert({
-            active: true,
-            message: error.message,
-            type: 'error',
-            autoClose: true,
+      } else {
+        addProduct(data)
+          .then(() => {
+            setAlert({
+              active: true,
+              message: 'Product added succesfully',
+              type: 'success',
+              autoClose: true,
+            });
+            setOpen(false);
+          })
+          .catch((error) => {
+            setAlert({
+              active: true,
+              message: error.message,
+              type: 'error',
+              autoClose: true,
+            });
           });
-        });
+      }
     }
   };
 
@@ -129,7 +157,7 @@ export default function FormProduct({ setOpen, setAlert, product }) {
                         className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                       >
                         <span>Upload a file</span>
-                        <input defaultValue={product?.images} id="images" name="images" type="file" className="sr-only" />
+                        <input id="images" name="images" type="file" className="sr-only" />
                       </label>
                       <p className="pl-1">or drag and drop</p>
                     </div>

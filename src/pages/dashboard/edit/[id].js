@@ -10,6 +10,7 @@ export default function Edit() {
   const [found, setFound] = useState(true);
   const [product, setProduct] = useState({});
   const router = useRouter();
+  const [, setOpen] = useState(false);
   const { alert, setAlert, toggleAlert } = useAlert();
 
   useEffect(() => {
@@ -20,14 +21,14 @@ export default function Edit() {
       try {
         const response = await axios.get(endPoints.products.getProduct(id));
         if (response) {
-          setFound(true);
           setProduct(response.data);
+          setFound(true);
         }
       } catch (error) {
         setFound(false);
         setAlert({
           active: true,
-          message: error.message,
+          message: 'Product not found.',
           type: 'error',
           autoClose: false,
         });
@@ -36,5 +37,10 @@ export default function Edit() {
     getProduct();
   }, [router?.isReady]);
 
-  return found ? <FormProduct product={product} /> : <Alert alert={alert} handleClose={toggleAlert} />;
+  return (
+    <>
+      {<Alert alert={alert} handleClose={toggleAlert} />}
+      {found && <FormProduct product={product} setOpen={setOpen} setAlert={setAlert} />}
+    </>
+  );
 }
